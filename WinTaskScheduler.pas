@@ -16,7 +16,7 @@
   deprecated since Windows Vista and should not be used there (although it seems
   to work for now). TS 2.0 is available only from Windows Vista up.
 
-  ©František Milt 2017-08-22
+  ©František Milt 2017-08-24
 
   Version 1.0
 
@@ -36,7 +36,7 @@ unit WinTaskScheduler;
 interface
 
 uses
-  Windows;
+  Windows, ActiveX;
 
 {===============================================================================
 
@@ -640,25 +640,53 @@ const
   IID_IRunningTaskCollection:     TGUID = '{6a67614b-6828-4fec-aa54-6d52e8f1f2db}';
   IID_IRegistrationInfo:          TGUID = '{416D8B73-CB41-4ea1-805C-9BE9A5AC4A74}';
   IID_IRepetitionPattern:         TGUID = '{7FB9ACF1-26BE-400e-85B5-294B9C75DFD6}';
+  IID_ITaskNamedValuePair:        TGUID = '{39038068-2B46-4afd-8662-7BB6F868D221}';
+  IID_ITaskNamedValueCollection:  TGUID = '{B4EF826B-63C3-46e4-A504-EF69E4F7EA4D}';
   IID_ITrigger:                   TGUID = '{09941815-ea89-4b5b-89e0-2a773801fac3}';
   IID_ITriggerCollection:         TGUID = '{85df5081-1b24-4f32-878a-d9d14df4cb77}';
+  IID_IBootTrigger:               TGUID = '{2A9C35DA-D357-41f4-BBC1-207AC1B1F3CB}';
+  IID_IDailyTrigger:              TGUID = '{126c5cd8-b288-41d5-8dbf-e491446adc5c}';
+  IID_IEventTrigger:              TGUID = '{d45b0167-9653-4eef-b94f-0732ca7af251}';
+  IID_IIdleTrigger:               TGUID = '{d537d2b0-9fb3-4d34-9739-1ff5ce7b1ef3}';
+  IID_ILogonTrigger:              TGUID = '{72DADE38-FAE4-4b3e-BAF4-5D009AF02B1C}';
+  IID_IMonthlyDOWTrigger:         TGUID = '{77d025a3-90fa-43aa-b52e-cda5499b946a}';
+  IID_IMonthlyTrigger:            TGUID = '{97c45ef1-6b02-4a1a-9c0e-1ebfba1500ac}';
+  IID_IRegistrationTrigger:       TGUID = '{4c8fec3a-c218-4e0c-b23d-629024db91a2}';
+  IID_ISessionStateChangeTrigger: TGUID = '{754DA71B-4385-4475-9DD9-598294FA3641}';
+  IID_ITimeTrigger:               TGUID = '{b45747e0-eba7-4276-9f29-85c5bb300006}';
+  IID_IWeeklyTrigger:             TGUID = '{5038fc98-82ff-436d-8728-a512a57c9dc1}';
   IID_IIdleSettings:              TGUID = '{84594461-0053-4342-A8FD-088FABF11F32}';
   IID_INetworkSettings:           TGUID = '{9F7DEA84-C30B-4245-80B6-00E9F646F1B4}';
+  IID_IMaintenanceSettings:       TGUID = '{A6024FA8-9652-4ADB-A6BF-5CFCD877A7BA}';
   IID_ITaskSettings:              TGUID = '{8FD4711D-2D02-4c8c-87E3-EFF699DE127E}';
+  IID_ITaskSettings2:             TGUID = '{2C05C3F0-6EED-4c05-A15F-ED7D7A98A369}';
+  IID_ITaskSettings3:             TGUID = '{0AD9D0D7-0C7F-4EBB-9A5F-D1C648DCA528}';
   IID_IPrincipal:                 TGUID = '{D98D51E5-C9B4-496a-A9C1-18980261CF0F}';
+  IID_IPrincipal2:                TGUID = '{248919AE-E345-4A6D-8AEB-E0D3165C904E}';
   IID_IAction:                    TGUID = '{BAE54997-48B1-4cbe-9965-D6BE263EBEA4}';
-  IID_IActionCollection:          TGUID = '{02820E19-7B98-4ed2-B2E8-FDCCCEFF619B}'; 
+  IID_IActionCollection:          TGUID = '{02820E19-7B98-4ed2-B2E8-FDCCCEFF619B}';
+  IID_IComHandlerAction:          TGUID = '{6D2FD252-75C5-4f66-90BA-2A7D8CC3039F}';
+  IID_IEmailAction:               TGUID = '{10F62C64-7E16-4314-A0C2-0C3683F99D40}';
+  IID_IExecAction:                TGUID = '{4c3d624d-fd6b-49a3-b9b7-09cb3cd3f047}';
+  IID_IShowMessageAction:         TGUID = '{505E9E68-AF89-46b8-A30F-56162A83D537}';
   IID_ITaskDefinition:            TGUID = '{f5bc8fc5-536d-4f77-b852-fbc1356fdeb6}';
   IID_IRegisteredTask:            TGUID = '{9c86f320-dee3-4dd1-b972-a303f26b061e}';
   IID_IRegisteredTaskCollection:  TGUID = '{86627eb4-42a7-41e4-a4d9-ac33a72f2d52}';
   IID_ITaskFolder:                TGUID = '{8cfac062-a080-4c15-9a88-aa7c2af80dfc}';
   IID_ITaskFolderCollection:      TGUID = '{79184a66-8664-423f-97f1-637356a5d812}';
   IID_ITaskService:               TGUID = '{2faba4c7-4da9-4013-9697-20cc3fd40f85}';
+  IID_ITaskHandler:               TGUID = '{839d7762-5121-4009-9234-4f0d19394f04}';
+  IID_ITaskHandlerStatus:         TGUID = '{eaec7a8f-27a0-4ddc-8675-14726a01a38a}';
+  IID_ITaskVariables:             TGUID = '{3e4c9351-d966-4b8b-bb87-ceba68bb0107}';
+
+
+  CLSID_TaskScheduler:       TGUID = '{0f87369f-a4e5-4cfc-bd3e-73e6154572dd}';
+  CLSID_TaskHandlerPS:       TGUID = '{f2a69db7-da2c-4352-9066-86fee6dacac9}';
+  CLSID_TaskHandlerStatusPS: TGUID = '{9f15266d-d7ba-48f0-93c1-e6895f6fe5ac}';
 
 type
-  // forward declarations
+  // forward declarations to resolve circular references
   ITaskFolderCollection = interface;  PITaskFolderCollection = ^ITaskFolderCollection;
-//  IActionCollection = interface;
 
 //------------------------------------------------------------------------------
 {
@@ -752,6 +780,38 @@ type
 
 //------------------------------------------------------------------------------
 {
+  https://msdn.microsoft.com/library/windows/desktop/aa381804
+}
+  PITaskNamedValuePair = ^ITaskNamedValuePair;
+  ITaskNamedValuePair = interface(IDispatch)
+  ['{39038068-2B46-4afd-8662-7BB6F868D221}']
+    Function get_Name: BSTR; safecall;
+    procedure put_Name(name: BSTR); safecall;
+    Function get_Value: BSTR; safecall;
+    procedure put_Value(value: BSTR); safecall;
+    property Name: BSTR read get_Name write put_Name;
+    property Value: BSTR read get_Value write put_Value;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381392
+}
+  ITaskNamedValueCollection = interface(IDispatch)
+  ['{B4EF826B-63C3-46e4-A504-EF69E4F7EA4D}']
+    Function get_Count: LONG; safecall;
+    Function get_Item(index: LONG): ITaskNamedValuePair; safecall;
+    Function get__NewEnum: IUnknown; safecall;
+    Function Create(name, value: BSTR; ppPair: PITaskNamedValuePair): HRESULT; stdcall;
+    Function Remove(index: LONG): HRESULT; stdcall;
+    Function Clear: HRESULT; stdcall;
+    property Count: LONG read get_Count;
+    property Item[index: LONG]: ITaskNamedValuePair read get_Item;
+    property _NewEnum: IUnknown read get__NewEnum;
+  end;
+
+//------------------------------------------------------------------------------
+{
   https://msdn.microsoft.com/library/windows/desktop/aa381887
 }
   PITrigger = ^ITrigger;
@@ -798,6 +858,169 @@ type
 
 //------------------------------------------------------------------------------
 {
+  https://msdn.microsoft.com/library/windows/desktop/aa380603
+}
+  IBootTrigger = interface(ITrigger)
+  ['{2A9C35DA-D357-41f4-BBC1-207AC1B1F3CB}']
+    Function get_Delay: BSTR; safecall;
+    procedure put_Delay(delay: BSTR); safecall;
+    property Delay: BSTR read get_Delay write put_Delay;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380656
+}
+  IDailyTrigger = interface(ITrigger)
+  ['{126c5cd8-b288-41d5-8dbf-e491446adc5c}']
+    Function get_DaysInterval: SHORT; safecall;
+    procedure put_DaysInterval(days: SHORT); safecall;
+    Function get_RandomDelay: BSTR; safecall;
+    procedure put_RandomDelay(randomDelay: BSTR); safecall;
+    property DaysInterval: SHORT read get_DaysInterval write put_DaysInterval;
+    property RandomDelay: BSTR read get_RandomDelay write put_RandomDelay;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380711
+}
+  IEventTrigger = interface(ITrigger)
+  ['{d45b0167-9653-4eef-b94f-0732ca7af251}']
+    Function get_Subscription: BSTR; safecall;
+    procedure put_Subscription(query: BSTR); safecall;
+    Function get_Delay: BSTR; safecall;
+    procedure put_Delay(delay: BSTR); safecall;
+    Function get_ValueQueries: ITaskNamedValueCollection; safecall;
+    procedure put_ValueQueries(pNamedXPaths: ITaskNamedValueCollection); safecall;
+    property Subscription: BSTR read get_Subscription write put_Subscription;
+    property Delay: BSTR read get_Delay write put_Delay;
+    property ValueQueries: ITaskNamedValueCollection read get_ValueQueries write put_ValueQueries;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380724
+}
+  IIdleTrigger = interface(ITrigger)
+  ['{d537d2b0-9fb3-4d34-9739-1ff5ce7b1ef3}']
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380725
+}
+  ILogonTrigger = interface(ITrigger)
+  ['{72DADE38-FAE4-4b3e-BAF4-5D009AF02B1C}']
+    Function get_Delay: BSTR; safecall;
+    procedure put_Delay(delay: BSTR); safecall;
+    Function get_UserId: BSTR; safecall;
+    procedure put_UserId(user: BSTR); safecall;
+    property Delay: BSTR read get_Delay write put_Delay;
+    property UserId: BSTR read get_UserId write put_UserId;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380728
+}
+  IMonthlyDOWTrigger = interface(ITrigger)
+  ['{77d025a3-90fa-43aa-b52e-cda5499b946a}']
+    Function get_DaysOfWeek: SHORT; safecall;
+    procedure put_DaysOfWeek(days: SHORT); safecall;
+    Function get_WeeksOfMonth: SHORT; safecall;
+    procedure put_WeeksOfMonth(weeks: SHORT); safecall;
+    Function get_MonthsOfYear: SHORT; safecall;
+    procedure put_MonthsOfYear(months: SHORT); safecall;
+    Function get_RunOnLastWeekOfMonth: VARIANT_BOOL; safecall;
+    procedure put_RunOnLastWeekOfMonth(lastWeek: VARIANT_BOOL); safecall;
+    Function get_RandomDelay: BSTR; safecall;
+    procedure put_RandomDelay(randomDelay: BSTR); safecall; 
+    property DaysOfWeek: SHORT read get_DaysOfWeek write put_DaysOfWeek;
+    property WeeksOfMonth: SHORT read get_WeeksOfMonth write put_WeeksOfMonth;
+    property MonthsOfYear: SHORT read get_MonthsOfYear write put_MonthsOfYear;
+    property RunOnLastWeekOfMonth: VARIANT_BOOL read get_RunOnLastWeekOfMonth write put_RunOnLastWeekOfMonth;
+    property RandomDelay: BSTR read get_RandomDelay write put_RandomDelay;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380734
+}
+  IMonthlyTrigger = interface(ITrigger)
+  ['{97c45ef1-6b02-4a1a-9c0e-1ebfba1500ac}']
+    Function get_DaysOfMonth: LONG; safecall;
+    procedure put_DaysOfMonth(days: LONG); safecall;
+    Function get_MonthsOfYear: SHORT; safecall;
+    procedure put_MonthsOfYear(months: SHORT); safecall;
+    Function get_RunOnLastDayOfMonth: VARIANT_BOOL; safecall;
+    procedure put_RunOnLastDayOfMonth(lastDay: VARIANT_BOOL); safecall;
+    Function get_RandomDelay: BSTR; safecall;
+    procedure put_RandomDelay(randomDelay: BSTR); safecall;
+    property DaysOfMonth: LONG read get_DaysOfMonth write put_DaysOfMonth;
+    property MonthsOfYear: SHORT read get_MonthsOfYear write put_MonthsOfYear;
+    property RunOnLastDayOfMonth: VARIANT_BOOL read get_RunOnLastDayOfMonth write put_RunOnLastDayOfMonth;
+    property RandomDelay: BSTR read get_RandomDelay write put_RandomDelay;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381104
+}
+  IRegistrationTrigger = interface(ITrigger)
+  ['{4c8fec3a-c218-4e0c-b23d-629024db91a2}']
+    Function get_Delay: BSTR; safecall;
+    procedure put_Delay(delay: BSTR); safecall;
+    property Delay: BSTR read get_Delay write put_Delay;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381292
+}
+  ISessionStateChangeTrigger = interface(ITrigger)
+  ['{754DA71B-4385-4475-9DD9-598294FA3641}']
+    Function get_Delay: BSTR; safecall;
+    procedure put_Delay(delay: BSTR); safecall;
+    Function get_UserId: BSTR; safecall;
+    procedure put_UserId(user: BSTR); safecall;
+    Function get_StateChange: TASK_SESSION_STATE_CHANGE_TYPE; safecall;
+    procedure put_StateChange(type_: TASK_SESSION_STATE_CHANGE_TYPE); safecall;
+    property Delay: BSTR read get_Delay write put_Delay;
+    property UserId: BSTR read get_UserId write put_UserId;
+    property StateChange: TASK_SESSION_STATE_CHANGE_TYPE read get_StateChange write put_StateChange;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381885
+}
+  ITimeTrigger = interface(ITrigger)
+  ['{b45747e0-eba7-4276-9f29-85c5bb300006}']
+    Function get_RandomDelay: BSTR; safecall;
+    procedure put_RandomDelay(randomDelay: BSTR); safecall;
+    property RandomDelay: BSTR read get_RandomDelay write put_RandomDelay;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381904
+}
+  IWeeklyTrigger = interface(ITrigger)
+  ['{5038fc98-82ff-436d-8728-a512a57c9dc1}']
+    Function get_DaysOfWeek: SHORT; safecall;
+    procedure put_DaysOfWeek(days: SHORT); safecall;
+    Function get_WeeksInterval: SHORT; safecall;
+    procedure put_WeeksInterval(weeks: SHORT); safecall;
+    Function get_RandomDelay: BSTR; safecall;
+    procedure put_RandomDelay(randomDelay: BSTR); safecall;
+    property DaysOfWeek: SHORT read get_DaysOfWeek write put_DaysOfWeek;
+    property WeeksInterval: SHORT read get_WeeksInterval write put_WeeksInterval;
+    property RandomDelay: BSTR read get_RandomDelay write put_RandomDelay;
+  end;
+
+//------------------------------------------------------------------------------
+{
   https://msdn.microsoft.com/library/windows/desktop/aa380719
 }
   IIdleSettings = interface(IDispatch)
@@ -828,6 +1051,24 @@ type
     procedure put_Id(id: BSTR); safecall;
     property Name: BSTR read get_Name write put_Name;
     property Id: BSTR read get_Id write put_Id;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/hh832144
+}
+  PIMaintenanceSettings = ^IMaintenanceSettings;
+  IMaintenanceSettings = interface(IDispatch)
+  ['{A6024FA8-9652-4ADB-A6BF-5CFCD877A7BA}']
+    procedure  put_Period(value: BSTR); safecall;
+    Function get_Period: BSTR; safecall;
+    procedure put_Deadline(value: BSTR); safecall;
+    Function get_Deadline: BSTR; safecall;
+    procedure put_Exclusive(value: VARIANT_BOOL); safecall;
+    Function get_Exclusive: VARIANT_BOOL; safecall;
+    property Period: BSTR read get_Period write put_Period;
+    property Deadline: BSTR read get_Deadline write put_Deadline;
+    property Exclusive: VARIANT_BOOL read get_Exclusive write put_Exclusive;
   end;
 
 //------------------------------------------------------------------------------
@@ -900,6 +1141,41 @@ type
 
 //------------------------------------------------------------------------------
 {
+  https://msdn.microsoft.com/library/windows/desktop/ee695863
+}
+  ITaskSettings2 = interface(IDispatch)
+  ['{2C05C3F0-6EED-4c05-A15F-ED7D7A98A369}']
+    Function get_DisallowStartOnRemoteAppSession: VARIANT_BOOL; safecall;
+    procedure put_DisallowStartOnRemoteAppSession(disallowStart: VARIANT_BOOL); safecall;
+    Function get_UseUnifiedSchedulingEngine: VARIANT_BOOL; safecall;
+    procedure put_UseUnifiedSchedulingEngine(useUnifiedEngine: VARIANT_BOOL); safecall;
+    property DisallowStartOnRemoteAppSession: VARIANT_BOOL read get_DisallowStartOnRemoteAppSession write put_DisallowStartOnRemoteAppSession;
+    property UseUnifiedSchedulingEngine: VARIANT_BOOL read get_UseUnifiedSchedulingEngine write put_UseUnifiedSchedulingEngine;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/hh832148
+}
+  ITaskSettings3 = interface(ITaskSettings)
+  ['{0AD9D0D7-0C7F-4EBB-9A5F-D1C648DCA528}']
+    Function get_DisallowStartOnRemoteAppSession: VARIANT_BOOL; safecall;
+    procedure put_DisallowStartOnRemoteAppSession(disallowStart: VARIANT_BOOL); safecall;
+    Function get_UseUnifiedSchedulingEngine: VARIANT_BOOL; safecall;
+    procedure put_UseUnifiedSchedulingEngine(useUnifiedEngine: VARIANT_BOOL); safecall;
+    Function get_MaintenanceSettings: IMaintenanceSettings; safecall;
+    procedure put_MaintenanceSettings(pMaintenanceSettings: IMaintenanceSettings); safecall;
+    Function CreateMaintenanceSettings(ppMaintenanceSettings: PIMaintenanceSettings): HRESULT; stdcall;
+    Function get_Volatile: VARIANT_BOOL; safecall;
+    procedure put_Volatile(Volatile: VARIANT_BOOL); safecall;
+    property DisallowStartOnRemoteAppSession: VARIANT_BOOL read get_DisallowStartOnRemoteAppSession write put_DisallowStartOnRemoteAppSession;
+    property UseUnifiedSchedulingEngine: VARIANT_BOOL read get_UseUnifiedSchedulingEngine write put_UseUnifiedSchedulingEngine;
+    property MaintenanceSettings: IMaintenanceSettings read get_MaintenanceSettings write put_MaintenanceSettings;
+    property Volatile: VARIANT_BOOL read get_Volatile write put_Volatile;
+  end;
+
+//------------------------------------------------------------------------------
+{
   https://msdn.microsoft.com/library/windows/desktop/aa380742
 }
   IPrincipal = interface(IDispatch)
@@ -922,6 +1198,22 @@ type
     property LogonType: TASK_LOGON_TYPE read get_LogonType write put_LogonType;
     property GroupId: BSTR read get_GroupId write put_GroupId;
     property RunLevel: TASK_RUNLEVEL_TYPE read get_RunLevel write put_RunLevel;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/ee695858
+}
+  IPrincipal2 = interface(IDispatch)
+  ['{248919AE-E345-4A6D-8AEB-E0D3165C904E}']
+    Function get_ProcessTokenSidType: TASK_PROCESSTOKENSID_TYPE; safecall;
+    procedure put_ProcessTokenSidType(processTokenSidType: TASK_PROCESSTOKENSID_TYPE); safecall;
+    Function get_RequiredPrivilegeCount: LONG; safecall;
+    Function get_RequiredPrivilege(index: LONG): BSTR; safecall;
+    Function AddRequiredPrivilege(privilege: BSTR): HRESULT; stdcall;
+    property ProcessTokenSidType: TASK_PROCESSTOKENSID_TYPE read get_ProcessTokenSidType write put_ProcessTokenSidType;
+    property RequiredPrivilegeCount: LONG read get_RequiredPrivilegeCount;
+    property RequiredPrivilege[index: LONG]: BSTR read get_RequiredPrivilege;
   end;
 
 //------------------------------------------------------------------------------
@@ -959,6 +1251,89 @@ type
     property _NewEnum: IUnknown read get__NewEnum;
     property XmlText: BSTR read get_XmlText write put_XmlText;
     property Context: BSTR read get_Context write put_Context;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380613
+}
+  IComHandlerAction = interface(IAction)
+  ['{6D2FD252-75C5-4f66-90BA-2A7D8CC3039F}']
+    Function get_ClassId: BSTR; safecall;
+    procedure put_ClassId(clsid: BSTR); safecall;
+    Function get_Data: BSTR; safecall;
+    procedure put_Data(data: BSTR); safecall;
+    property ClassId: BSTR read get_ClassId write put_ClassId;
+    property Data: BSTR read get_Data write put_Data;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380693
+}
+  IEmailAction = interface(IAction)
+  ['{10F62C64-7E16-4314-A0C2-0C3683F99D40}']
+    Function get_Server: BSTR; safecall;
+    procedure put_Server(server: BSTR); safecall;
+    Function get_Subject: BSTR; safecall;
+    procedure put_Subject(subject: BSTR); safecall;
+    Function get_To: BSTR; safecall;
+    procedure put_To(to_: BSTR); safecall;
+    Function get_Cc: BSTR; safecall;
+    procedure put_Cc(cc: BSTR); safecall;
+    Function get_Bcc: BSTR; safecall;
+    procedure put_Bcc(bcc: BSTR); safecall;
+    Function get_ReplyTo: BSTR; safecall;
+    procedure put_ReplyTo(replyTo: BSTR); safecall;
+    Function get_From: BSTR; safecall;
+    procedure put_From(from: BSTR); safecall;
+    Function get_HeaderFields: ITaskNamedValueCollection; safecall;
+    procedure put_HeaderFields(pHeaderFields: ITaskNamedValueCollection); safecall;
+    Function get_Body: BSTR; safecall;
+    procedure put_Body(body: BSTR); safecall;
+    Function get_Attachments: PSAFEARRAY; safecall;
+    procedure put_Attachments(pAttachements: PSAFEARRAY); safecall;
+    property Server: BSTR read get_Server write put_Server;
+    property Subject: BSTR read get_Subject write put_Subject;
+    property To_: BSTR read get_To write put_To;
+    property Cc: BSTR read get_Cc write put_Cc;
+    property Bcc: BSTR read get_Bcc write put_Bcc;
+    property ReplyTo: BSTR read get_ReplyTo write put_ReplyTo;
+    property From: BSTR read get_From write put_From;
+    property HeaderFields: ITaskNamedValueCollection read get_HeaderFields write put_HeaderFields;
+    property Body: BSTR read get_Body write put_Body;
+    property Attachments: PSAFEARRAY read get_Attachments write put_Attachments;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa380715
+}
+  IExecAction = interface(IAction)
+  ['{4c3d624d-fd6b-49a3-b9b7-09cb3cd3f047}']
+    Function get_Path: BSTR; safecall;
+    procedure put_Path(path: BSTR); safecall;
+    Function get_Arguments: BSTR; safecall;
+    procedure put_Arguments(argument: BSTR); safecall;
+    Function get_WorkingDirectory: BSTR; safecall;
+    procedure put_WorkingDirectory(workingDirectory: BSTR); safecall;
+    property Path: BSTR read get_Path write put_Path;
+    property Arguments: BSTR read get_Arguments write put_Arguments;
+    property WorkingDirectory: BSTR read get_WorkingDirectory write put_WorkingDirectory;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381302
+}
+  IShowMessageAction = interface(IAction)
+  ['{505E9E68-AF89-46b8-A30F-56162A83D537}']
+    Function get_Title: BSTR; safecall;
+    procedure put_Title(title: BSTR); safecall;
+    Function get_MessageBody: BSTR; safecall;
+    procedure put_MessageBody(messageBody: BSTR); safecall;
+    property Title: BSTR read get_Title write put_Title;
+    property MessageBody: BSTR read get_MessageBody write put_MessageBody;
   end;
 
 //------------------------------------------------------------------------------
@@ -1081,6 +1456,39 @@ type
     property Count: LONG read get_Count;
     property Item[index: OleVariant]: ITaskFolder read get_Item;
     property _NewEnum: IUnknown read get__NewEnum;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381370
+}
+  ITaskHandler = interface(IUnknown)
+  ['{839d7762-5121-4009-9234-4f0d19394f04}']
+    Function Start(pHandlerServices: IUnknown; data: BSTR): HRESULT; stdcall;
+    Function Stop(pRetCode: PHRESULT): HRESULT; stdcall;
+    Function Pause: HRESULT; stdcall;        
+    Function Resume: HRESULT; stdcall;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381373
+}
+  ITaskHandlerStatus = interface(IUnknown)
+  ['{eaec7a8f-27a0-4ddc-8675-14726a01a38a}']
+    Function UpdateStatus(percentComplete: SHORT; statusMessage: BSTR): HRESULT; stdcall;
+    Function TaskCompleted(taskErrCode: HRESULT): HRESULT; stdcall;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/aa381868
+}
+  ITaskVariables = interface(IUnknown)
+  ['{3e4c9351-d966-4b8b-bb87-ceba68bb0107}']
+    Function GetInput(pInput: PBSTR): HRESULT; stdcall;
+    Function SetOutput(input: BSTR): HRESULT; stdcall;
+    Function GetContext(pContext: PBSTR): HRESULT; stdcall;
   end;
 
 implementation
