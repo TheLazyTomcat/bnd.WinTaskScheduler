@@ -1436,7 +1436,7 @@ type
     Function DeleteTask(name: BSTR; flags: LONG): HRESULT; stdcall;
     Function RegisterTask(path, xmlText: BSTR; flags: LONG; userID, password: OleVariant; logonType: TASK_LOGON_TYPE;
               sddl: OleVariant; ppTask: PIRegisteredTask): HRESULT; stdcall;
-    Function RegisterTaskDefinition(path: BSTR; pDefinition: PITaskDefinition; flags: LONG; userID, password: OleVariant;
+    Function RegisterTaskDefinition(path: BSTR; pDefinition: ITaskDefinition; flags: LONG; userID, password: OleVariant;
               logonType: TASK_LOGON_TYPE; sddl: OleVariant; pptask: PIRegisteredTask): HRESULT; stdcall;
     Function GetSecurityDescriptor(securityInformation: LONG; pSddl: PBSTR): HRESULT; stdcall;
     Function SetSecurityDescriptor(sddl: BSTR; flags: LONG): HRESULT; stdcall;
@@ -1456,6 +1456,28 @@ type
     property Count: LONG read get_Count;
     property Item[index: OleVariant]: ITaskFolder read get_Item;
     property _NewEnum: IUnknown read get__NewEnum;
+  end;
+
+//------------------------------------------------------------------------------
+{
+  https://msdn.microsoft.com/library/windows/desktop/
+}
+  ITaskService = interface(IDispatch)
+  ['{2faba4c7-4da9-4013-9697-20cc3fd40f85}']
+    Function GetFolder(path: BSTR; ppFolder: PITaskFolder): HRESULT; stdcall;
+    Function GetRunningTasks(flags: LONG; ppRunningTasks: PIRunningTaskCollection): HRESULT; stdcall;
+    Function NewTask(flags: DWORD; ppDefinition: PITaskDefinition): HRESULT; stdcall;
+    Function Connect(serverName, user, domain, password: OleVariant): HRESULT; stdcall;
+    Function get_Connected: VARIANT_BOOL; safecall;
+    Function get_TargetServer: BSTR; safecall;
+    Function get_ConnectedUser: BSTR; safecall;
+    Function get_ConnectedDomain: BSTR; safecall;
+    Function get_HighestVersion: DWORD; safecall;
+    property Connected: VARIANT_BOOL read get_Connected;
+    property TargetServer: BSTR read get_TargetServer;
+    property ConnectedUser: BSTR read get_ConnectedUser;
+    property ConnectedDomain: BSTR read get_ConnectedDomain;
+    property HighestVersion: DWORD read get_HighestVersion;
   end;
 
 //------------------------------------------------------------------------------
