@@ -19,6 +19,15 @@
   ©František Milt 2017-08-24
 
   Version 1.0
+  
+  Contacts:
+    František Milt: frantisek.milt@gmail.com
+
+  Support:
+    If you find this code useful, please consider supporting the author by
+    making a small donation using following link(s):
+
+      https://www.paypal.me/FMilt
 
 ===============================================================================}
 unit WinTaskScheduler;
