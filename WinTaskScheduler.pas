@@ -9,25 +9,36 @@
 
   WinTaskScheduler
 
-  This unit provides types, constants and most importantly interfaces for
-  Windows Task Scheduler. Interfaces for both Task Scheduler 1.0 and Task
-  Scheduler 2.0 are included.
-  TS 1.0 should be used only on Windows 2000, XP and Server 2003, it is
-  deprecated since Windows Vista and should not be used there (although it seems
-  to work for now). TS 2.0 is available only from Windows Vista up.
+    This unit provides types, constants and most importantly interfaces for
+    Windows Task Scheduler. Interfaces for both Task Scheduler 1.0 and
+    Task Scheduler 2.0 are included.
+    TS 1.0 should be used only on Windows 2000, XP and Server 2003, it is
+    deprecated since Windows Vista and should not be used there (although
+    it seems to work for now).
+    TS 2.0 is available only from Windows Vista up.
 
-  ©František Milt 2017-08-24
+  version 1.0 (2017-08-25)
 
-  Version 1.0
-  
+  Last change 2019-10-05
+
+  ©2017-2019 František Milt
+
   Contacts:
     František Milt: frantisek.milt@gmail.com
 
   Support:
-    If you find this code useful, please consider supporting the author by
-    making a small donation using following link(s):
+    If you find this code useful, please consider supporting its author(s) by
+    making a small donation using the following link(s):
 
       https://www.paypal.me/FMilt
+
+  Changelog:
+    For detailed changelog and history please refer to this git repository:
+
+      github.com/TheLazyTomcat/Bnd.WinTaskScheduler
+
+  Dependencies:
+    none
 
 ===============================================================================}
 unit WinTaskScheduler;
@@ -250,12 +261,12 @@ type
 ===============================================================================}
 
 const
-  IID_ITaskTrigger: TGUID = '{148BD52B-A2AB-11CE-B11F-00AA00530503}';
+  IID_ITaskTrigger:       TGUID = '{148BD52B-A2AB-11CE-B11F-00AA00530503}';
   IID_IScheduledWorkItem: TGUID = '{a6b952f0-a4b1-11d0-997d-00aa006887ec}';
-  IID_ITask: TGUID = '{148BD524-A2AB-11CE-B11F-00AA00530503}';
-  IID_IEnumWorkItems: TGUID = '{148BD528-A2AB-11CE-B11F-00AA00530503}';
+  IID_ITask:              TGUID = '{148BD524-A2AB-11CE-B11F-00AA00530503}';
+  IID_IEnumWorkItems:     TGUID = '{148BD528-A2AB-11CE-B11F-00AA00530503}';
   IID_ITaskScheduler:     TGUID = '{148BD527-A2AB-11CE-B11F-00AA00530503}';
-  IID_IProvideTaskPage: TGUID = '{4086658a-cbbb-11cf-b604-00c04fd8d565}';
+  IID_IProvideTaskPage:   TGUID = '{4086658a-cbbb-11cf-b604-00c04fd8d565}';
 
 {-------------------------------------------------------------------------------
 
