@@ -19,9 +19,9 @@
 
   version 1.0 (2017-08-25)
 
-  Last change 2019-10-05
+  Last change 2020-08-02
 
-  ©2017-2019 František Milt
+  ©2017-2020 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -48,8 +48,9 @@ unit WinTaskScheduler;
 {$IFEND}
 
 {$IFDEF FPC}
-  {$MODE ObjFPC}{$H+}
+  {$MODE ObjFPC}
 {$ENDIF}
+{$H+}
 
 {$MINENUMSIZE 4}
 
